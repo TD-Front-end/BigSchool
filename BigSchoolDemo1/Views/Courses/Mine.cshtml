@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BigSchoolDemo1.Models.Course>
+
+@{
+    ViewBag.Title = "Mine";
+    Layout = "~/Views/BigSchoolTemplate/MyupcommingCourselayout.cshtml";
+}
+
+<h2>My upcoming courses</h2>
+<table class="table">
+    <tr>      
+        <th>
+            @Html.DisplayNameFor(model => model.Place)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>      
+        <td>
+            @Html.DisplayFor(modelItem => item.Place)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CategoryId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |           
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id }, new { onclick = "return confirm('Hãy chắc chắn rằng .Khoá học phải không có học sinh nào tham gia mới được xoá');" })
+        </td>
+    </tr>
+}
+
+</table>

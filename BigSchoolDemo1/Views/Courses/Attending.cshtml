@@ -1,0 +1,64 @@
+﻿@model IEnumerable<BigSchoolDemo1.Models.Course>
+@using BigSchoolDemo1.Models'
+@{
+    ViewBag.Title = "Attending";
+    Layout = "~/Views/BigSchoolTemplate/CourseIamgoinglayout.cshtml";
+}
+<section class="popular-course-area section-gap">
+    <div class="container-fluid">
+        <div class="owl-carousel popuar-course-carusel">
+            @foreach (var course in Model)
+            {
+                <div class="single-popular-course">
+                    <div class="thumb">
+                        <img class="f-img img-fluid mx-auto" src="~/DataLayout/img/popular-course/p1.jpg" alt="" />
+                    </div>
+                    <div class="details">
+                        <div class="d-flex justify-content-between mb-20">                           
+                            <p class="value">$150</p>
+                        </div>
+                        <a href="#">
+                            <div class="date">
+                                <div class="month">
+                                    @course.DateTime.ToString();
+                                </div>
+                                <div class="day">
+                                    @* @course.DateTime.ToString();*@
+                                </div>
+                            </div>
+                            <div class="details">
+                                <span class="lecture">
+                                    @course.lectureName
+                                </span>
+                                <span class="course">
+                                    @course.Category.Name
+                                </span>
+                            </div>
+                        </a>
+                        <div class="bottom d-flex mt-15">
+                            <ul class="list">
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                            </ul>
+                            <p class="ml-20">25 Reviews</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+

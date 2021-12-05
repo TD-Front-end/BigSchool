@@ -1,0 +1,151 @@
+﻿@using BigSchoolDemo1.Models
+@{
+    ViewBag.Title = "Course1";
+    Layout = "~/Views/BigSchoolTemplate/HomeLayout.cshtml";
+}
+@{ IEnumerable<Course> lsCourse = (IEnumerable<Course>)ViewBag.ListCourse;}
+@Html.Partial("PartialCourses")
+<section class="popular-course-area section-gap">
+    <div class="container-fluid">
+        <div class="owl-carousel popuar-course-carusel">
+            @foreach (var course in Model)
+            {                             
+                <div class="single-popular-course">
+                    <div class="thumb">
+                        <img class="f-img img-fluid mx-auto" src="~/DataLayout/img/popular-course/p1.jpg" alt="" />
+                    </div>
+                    <div class="details">
+                        <div class="d-flex justify-content-between mb-20">
+                            <p class="value">$150</p>
+                        </div>
+                        <a href="#">
+
+                            <div class="date">
+                                <div class="month">
+                                    <h5>Month</h5>
+                                    @course.DateTime.ToString("MM")
+                                </div>
+                                <div class="day">
+                                    <h5>Day</h5>
+                                    @course.DateTime.ToString("dd")
+                                </div>
+                            </div>
+                            <div class="details">
+                                <span class="lecture" style="font-size:17px;">
+                                    @course.Name
+                                    @if (course.isLogin)
+                                    {
+                                        if (course.isShowFollow)
+                                        {
+                                            <button data-user-id="@course.lectureId" class="btn btn-default btn-sm js-tongle-follow">Follow</button>
+                                        }
+                                        else
+                                        {
+                                            <button data-user-id="@course.lectureId" class="btn btn-success btn-sm js-tongle-follow">Following</button>
+                                        }
+                                    }
+                                </span>
+                                <br />
+                                <span class="category" style="font-size:17px;">
+                                    @course.Category.Name
+                                    @if (course.isLogin)
+                                    {
+                                        if (course.isShowGoing)
+                                        {
+                                            <button data-course-id="@course.Id" class="btn btn-default btn-sm js-tongle-attendance">Going?</button>
+                                        }
+                                        else
+                                        {
+                                            <button data-course-id="@course.Id" class="btn btn-info btn-sm js-tongle-attendance">Going</button>
+                                        }
+                                    }
+                                </span>
+                            </div>
+
+                        </a>
+                        <div class="bottom d-flex mt-15">
+                            <ul class="list">
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="fa fa-star"></i></a>
+                                </li>
+                            </ul>
+                            <p class="ml-20">25 Reviews</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            }
+        </div>
+    </div>
+</section>
+
+@*Button going>*@
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".js-tongle-attendance").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/attendances", { Id: button.attr("data-course-id") })
+                    .done(function (result) {//add going
+                        if (result == "cancel") {
+                            alert("Cancel register course sucessfully!")
+                            button
+                                .removeClass("btn-info")
+                                .addClass("btn-default")
+                                .text("Going?");
+                        } else {
+                            alert("Register course sucessfully!")
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going");
+                        }
+                    }).fail(function () {
+                        alert("Something fail");
+                    });
+            });
+            //button following
+            $(".js-tongle-follow").click(function (e) {
+                var button = $(e.target);
+                var followee = button.attr("data-user-id");
+                $.post("/api/follow", { FolloweeId: button.attr("data-user-id") })
+                    .done(function (result) {
+                        if (result == "cancel") {
+                            $('.js-tongle-follow').each(function (i, obj) {
+                                if ($(this).attr('data-user-id') == followee) {
+                                    $(this).removeClass("btn-success")
+                                        .addClass("btn-default")
+                                        .text("Follow");
+                                }
+                            });
+                            alert("unFollow sucessfully")
+                        } else {
+                            $('.js-tongle-follow').each(function (i, obj) {
+                                if ($(this).attr('data-user-id') == followee) {
+                                    $(this).removeClass("btn-default")
+                                        .addClass("btn-success")
+                                        .text("Following");
+                                }
+                            });
+                            alert("Follow sucessfully")
+                        }
+                    }).fail(function () {
+                        alert("Something fail");
+                    });
+            });
+        });
+    </script>
+}
